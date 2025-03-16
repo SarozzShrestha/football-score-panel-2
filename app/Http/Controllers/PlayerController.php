@@ -44,7 +44,7 @@ class PlayerController extends Controller
             'status' => isset($request->status) ? '1' : '0',
         ]);
 
-        return redirect()->back()->with('success', 'New player added.');
+        return redirect()->route('admin.players.index')->with('success', 'New player added.');
     }
 
     /**

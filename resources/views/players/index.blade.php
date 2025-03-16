@@ -22,29 +22,29 @@
     </tr>
     </thead>
     <tbody>
-    @foreach($players as $player)
-        <tr>
-            <td>{{ $player->name }}</td>
-            <td>{{ $player->role }}</td>
-            <td>{{ $player->position }}</td>
-            <td>{{ $player->image }}</td>
-            <td>{{ $player->nationality }}</td>
-            <td>{{ $player->height }}</td>
-            <td>{{ $player->height_unit }}</td>
-            <td>{{ $player->weight }}</td>
-            <td>{{ $player->weight_unit }}</td>
-            <td>{{ $player->age }}</td>
-            <td>{{ $player->status ? 'active' : 'inactive' }}</td>
-            <td>
-                <a href="{{ route('admin.players.show', ['player' => $player]) }}">View</a> |
-                <a href="{{ route('admin.players.edit', ['player' => $player]) }}">Update</a> |
-                <form action="{{ route('admin.players.destroy', ['player' => $player]) }}" method="POST" style="display: inline-block">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" onclick="return confirm('Are you sure you want to delete this post?')">Delete</button>
-                </form>
-            </td>
-        </tr>
-    @endforeach
+        @foreach($players as $player)
+            <tr>
+                <td>{{ $player->name }}</td>
+                <td>{{ $player->role }}</td>
+                <td>{{ $player->position }}</td>
+                <td>{{ $player->image }}</td>
+                <td>{{ $player->nationality }}</td>
+                <td>{{ $player->height }}</td>
+                <td>{{ $player->height_unit }}</td>
+                <td>{{ $player->weight }}</td>
+                <td>{{ $player->weight_unit }}</td>
+                <td>{{ $player->age }}</td>
+                <td>{{ $player->status ? 'active' : 'inactive' }}</td>
+                <td>
+                    <a href="{{ route('admin.players.show', ['player' => $player]) }}">View</a> |
+                    <a href="{{ route('admin.players.edit', ['player' => $player]) }}">Update</a> |
+                    <form action="{{ route('admin.players.destroy', ['player' => $player]) }}" method="POST" style="display: inline-block">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" onclick="return confirm('Are you sure you want to delete this post?')">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        @endforeach
     </tbody>
 </table>
