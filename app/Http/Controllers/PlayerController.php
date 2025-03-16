@@ -13,7 +13,8 @@ class PlayerController extends Controller
      */
     public function index()
     {
-        //
+        $players = Player::whereNull('deleted_at')->orderBy('name', 'ASC')->get();
+        return view('players.index', compact('players'));
     }
 
     /**
@@ -21,7 +22,7 @@ class PlayerController extends Controller
      */
     public function create()
     {
-        //
+        return view('players.create');
     }
 
     /**
@@ -29,7 +30,21 @@ class PlayerController extends Controller
      */
     public function store(StorePlayerRequest $request)
     {
-        //
+        Player::create([
+            'name' => $request->name,
+            'role' => $request->role,
+            'position' => $request->position,
+            'image' => $request->image,
+            'nationality' => $request->nationality,
+            'height' => $request->height,
+            'height_unit' => $request->height_unit,
+            'weight' => $request->weight,
+            'weight_unit' => $request->weight_unit,
+            'age' => $request->age,
+            'status' => isset($request->status) ? '1' : '0',
+        ]);
+
+        return redirect()->back()->with('success', 'New player added.');
     }
 
     /**
@@ -37,7 +52,7 @@ class PlayerController extends Controller
      */
     public function show(Player $player)
     {
-        //
+        return response()->json($player->toJson());
     }
 
     /**
@@ -45,7 +60,7 @@ class PlayerController extends Controller
      */
     public function edit(Player $player)
     {
-        //
+        return view('players.edit', compact('player'));
     }
 
     /**
@@ -53,7 +68,11 @@ class PlayerController extends Controller
      */
     public function update(UpdatePlayerRequest $request, Player $player)
     {
-        //
+        $request->merge(['status' => (string)(int)$request->has('status')]);
+
+        $player->update($request->all());
+
+        return redirect()->route('admin.players.index')->with('success', 'Player information updated.');
     }
 
     /**
@@ -61,6 +80,7 @@ class PlayerController extends Controller
      */
     public function destroy(Player $player)
     {
-        //
+        $player->delete();
+        return redirect()->back()->with('success', 'Player Deleted.');
     }
 }
