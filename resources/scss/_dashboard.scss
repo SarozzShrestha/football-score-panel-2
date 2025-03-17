@@ -1,0 +1,19 @@
+.login-wrapper{
+   
+    .title-wrap{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+        padding-bottom: 20px;
+        border-bottom: 2px solid #059fdf;
+        h3{
+            color: #059fdf;
+            font-size: 32px;
+            text-align: left;
+        }
+    }
+    .logo-wrap{
+            max-width: 200px;
+    }
+}

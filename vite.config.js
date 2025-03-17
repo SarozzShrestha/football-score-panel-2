@@ -4,10 +4,16 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
     plugins: [
-        laravel({
-            input: ['resources/css/app.css', 'resources/js/app.js'],
-            refresh: true,
-        }),
-        tailwindcss(),
+      laravel({
+        input: ['resources/scss/app.scss', 'resources/js/app.js'],
+        refresh: true,
+      }),
     ],
-});
+    css: {
+      preprocessorOptions: {
+        scss: {
+          additionalData: `@import "bootstrap/scss/functions"; @import "bootstrap/scss/variables";`,
+        },
+      },
+    },
+  });

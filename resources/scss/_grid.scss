@@ -1,0 +1,50 @@
+// Variables
+$grid-columns: 12;
+$gutter-width: 16px; // Adjust as needed
+$container-width: 1140px;
+
+// Container
+.container {
+  width: 100%;
+  max-width: $container-width;
+  margin: 0 auto;
+  padding-left: $gutter-width / 2;
+  padding-right: $gutter-width / 2;
+}
+
+// Row
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: -$gutter-width / 2;
+  margin-right: -$gutter-width / 2;
+}
+
+// Columns
+@for $i from 1 through $grid-columns {
+  .col-#{$i} {
+    flex: 0 0 percentage($i / $grid-columns);
+    max-width: percentage($i / $grid-columns);
+    padding-left: $gutter-width / 2;
+    padding-right: $gutter-width / 2;
+  }
+}
+
+// Responsive Grid
+$breakpoints: (
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px
+);
+
+@each $breakpoint, $size in $breakpoints {
+  @media (min-width: $size) {
+    @for $i from 1 through $grid-columns {
+      .col-#{$breakpoint}-#{$i} {
+        flex: 0 0 percentage($i / $grid-columns);
+        max-width: percentage($i / $grid-columns);
+      }
+    }
+  }
+}
