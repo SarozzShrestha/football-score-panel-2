@@ -6,13 +6,9 @@
 body {
   background-color: #f8f9fa;
 }
-$break-small:767px;
-$break-medium: 990px;
-$break-normal:1299px;
-$primary-color: #FFFBF7;
-$text-color: #252525;
-$font-stack: 'Poppins', sans-serif;
+
 // Import partials
+@import './variables';
 @import './grid';
 @import './normalize';
 @import './common';

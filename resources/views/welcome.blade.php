@@ -21,7 +21,7 @@
         <div class="login-wrapper">
             <div class="title-wrap">
                 <div class="logo-wrap">
-                    <img src="{{ Vite::asset('resources/images/designkarkhana_logo.jpg') }}" alt="Logo">
+                <img src="{{ asset('/build/images/designkarkhana_logo.jpg') }}" alt="Logo">
 
                     <!-- <img src= '../../images/' alt=""> -->
                 </div>

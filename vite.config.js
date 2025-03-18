@@ -1,19 +1,28 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import tailwindcss from '@tailwindcss/vite';
+import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 export default defineConfig({
     plugins: [
-      laravel({
-        input: ['resources/scss/app.scss', 'resources/js/app.js'],
-        refresh: true,
-      }),
+        laravel({
+            input: ['resources/scss/app.scss', 'resources/js/app.js'],
+            refresh: true,
+        }),
+        viteStaticCopy({
+            targets: [
+                {
+                    src: 'resources/images/**/*', // Source folder
+                    dest: 'images', // Will be copied to public/images
+                },
+            ],
+        }),
     ],
     css: {
-      preprocessorOptions: {
-        scss: {
-          additionalData: `@import "bootstrap/scss/functions"; @import "bootstrap/scss/variables";`,
+        preprocessorOptions: {
+            scss: {
+                additionalData: `@import "bootstrap/scss/functions"; @import "bootstrap/scss/variables";`,
+            },
         },
-      },
     },
-  });
+});
