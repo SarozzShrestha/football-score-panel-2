@@ -19,11 +19,15 @@ return new class extends Migration
             $table->foreignId('team_b_id')->constrained('teams')->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('team_b')->nullable();
             $table->integer('team_b_score')->default(0);
-            $table->string('Venue', 255);
-            $table->string('Weather', 255);
+            $table->string('venue', 255);
+            $table->string('weather', 255);
             $table->enum('status', ['0', '1', '2', '3'])->default('0')->comment('0: Yet to play, 1: Match ongoing, 2: match completed, 3: match abandoned');
             $table->dateTime('date_time');
             $table->enum('winner', ['0', '1', '2', '3'])->default('0')->comment('0: No result, 1: Team A, 2: Team B, 3: Match Drawn');
+            $table->foreignId('referee')->constrained('staffs')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('first_linesmen')->constrained('staffs')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('second_linesmen')->constrained('staffs')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('official')->constrained('staffs')->cascadeOnDelete()->cascadeOnUpdate();
             $table->softDeletes();
             $table->timestamps();
         });

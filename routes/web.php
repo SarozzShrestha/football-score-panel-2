@@ -11,7 +11,7 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-   return view('dashboard');
+    return view('dashboard');
 });
 
 Route::prefix('admin')->group(function () {
@@ -53,12 +53,12 @@ Route::prefix('admin')->group(function () {
         Route::get('teams/{team}/players', [TeamController::class, 'viewTeamPlayers'])->name('teams.teamPlayers');
         Route::post('teams/{team}/players', [TeamController::class, 'updateTeamPlayers'])->name('teams.teamPlayers.update');
 
-        Route::controller(GameController::class)->prefix('games')->group(function () {
-            Route::get('/', 'index')->name('games.index');
-            Route::get('/create', 'create')->name('games.create');
-        });
+        Route::resource('games', GameController::class)->names([
+            'index' => 'games.index',
+            'create' => 'games.create',
+            'store' => 'games.store',
+        ]);
 
     });
-
 
 });

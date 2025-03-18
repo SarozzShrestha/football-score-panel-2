@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreGameRequest;
 use App\Http\Requests\UpdateGameRequest;
 use App\Models\Game;
+use App\Models\Staff;
 use App\Models\Team;
 
 class GameController extends Controller
@@ -23,8 +24,9 @@ class GameController extends Controller
     public function create()
     {
         $teams = Team::get();
+        $staffs = Staff::where('role', '1')->get();
 
-        return view('games.create', compact('teams'));
+        return view('games.create', compact('teams', 'staffs'));
     }
 
     /**
