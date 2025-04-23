@@ -7,6 +7,7 @@
     <tr>
         <th>Playing XI</th>
         <th>Substitute</th>
+        <th>Game Captain</th>
         <th>Name</th>
         <th>Position</th>
         <th>Jersey No</th>
@@ -20,6 +21,10 @@
             </td>
             <td>
                 <input type="checkbox" class="team_a_substitute"  data-id="{{ $player->id }}" {{ $player->is_substitute ? 'checked' : '' }}/>
+            </td>
+            <td>
+                <input type="radio" class="team_a_captain" name="team_a_captain" data-id="{{ $player->id }}" value="{{ $player->id }}"
+                    {{ $player->is_captain ? 'checked' : ($player->pivot->is_captain == '1'  ? 'checked' : '') }} />
             </td>
             <td>
                 {{ $player->name }}
@@ -44,6 +49,7 @@
     <tr>
         <th>Playing XI</th>
         <th>Substitute</th>
+        <th>Game Captain</th>
         <th>Name</th>
         <th>Position</th>
         <th>Jersey No</th>
@@ -57,6 +63,10 @@
             </td>
             <td>
                 <input type="checkbox" class="team_b_substitute"  data-id="{{ $player->id }}" {{ $player->is_substitute ? 'checked' : '' }}/>
+            </td>
+            <td>
+                <input type="radio" class="team_b_captain" name="team_b_captain" data-id="{{ $player->id }}" value="{{ $player->id }}"
+                    {{ $player->is_captain ? 'checked' : ($player->pivot->is_captain == '1'  ? 'checked' : '') }} />
             </td>
             <td>
                 {{ $player->name }}
@@ -81,6 +91,17 @@
         let team_b_playing_xi = [];
         let team_a_subs = [];
         let team_b_subs = [];
+
+        let teamACaptainPlayer = null;
+        let teamBCaptainPlayer = null;
+
+        $('input[name="team_a_captain"]').on('change', function () {
+            teamACaptainPlayer = $(this).val();
+        });
+
+        $('input[name="team_b_captain"]').on('change', function () {
+            teamBCaptainPlayer = $(this).val();
+        });
 
         $('.team_a_playing-xi').on('change', function () {
             if($(this).prop('checked') === true) {
@@ -161,6 +182,8 @@
                     'team_b_playing_xi': team_b_playing_xi,
                     'team_a_subs': team_a_subs,
                     'team_b_subs': team_b_subs,
+                    'team_a_captain': teamACaptainPlayer,
+                    'team_b_captain': teamBCaptainPlayer,
                 },
                 'success': function (res) {
                     if (res['status'] == 'success') {
@@ -177,6 +200,8 @@
         $('.team_a_substitute').trigger('change');
         $('.team_b_playing-xi').trigger('change');
         $('.team_b_substitute').trigger('change');
+        $('input[name="team_a_captain"]').trigger('change');
+        $('input[name="team_b_captain"]').trigger('change');
     })
 </script>
 

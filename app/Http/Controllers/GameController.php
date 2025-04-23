@@ -103,8 +103,14 @@ class GameController extends Controller
                     ->where('player_id', $player->id)
                     ->value('status');
 
+                $isCaptain = DB::table('game_team_players')
+                    ->where('game_id', $game->id)
+                    ->where('player_id', $player->id)
+                    ->value('is_captain');
+
                 $player->is_playing_xi = $playerStatus == '1';
                 $player->is_substitute = $playerStatus == '2';
+                $player->is_captain = $isCaptain == '1';
 
                 return $player;
             });
@@ -118,8 +124,14 @@ class GameController extends Controller
                     ->where('player_id', $player->id)
                     ->value('status');
 
+                $isCaptain = DB::table('game_team_players')
+                    ->where('game_id', $game->id)
+                    ->where('player_id', $player->id)
+                    ->value('is_captain');
+
                 $player->is_playing_xi = $playerStatus == '1';
                 $player->is_substitute = $playerStatus == '2';
+                $player->is_captain = $isCaptain == '1';
 
                 return $player;
             });
@@ -133,10 +145,11 @@ class GameController extends Controller
         $teamBPlayingXI = $request->team_b_playing_xi ?? [];
         $teamASubs = $request->team_a_subs ?? [];
         $teamBSubs = $request->team_b_subs ?? [];
+        $teamACaptain = $request->team_a_captain ?? null;
+        $teamBCaptain = $request->team_b_captain ?? null;
 
         $allPlayers = array_merge($teamAPlayingXI, $teamBPlayingXI, $teamASubs, $teamBSubs);
 
-        // Fetch player details (name, jersey_no) from the players table
         $playerDetails = DB::table('players')
             ->whereIn('id', $allPlayers)
             ->pluck('name', 'id');
@@ -145,8 +158,7 @@ class GameController extends Controller
             ->whereIn('player_id', $allPlayers)
             ->pluck('jersey_no', 'player_id');
 
-        // Function to update or insert player data
-        $updateOrInsertPlayer = function ($playerId, $teamId, $status) use ($game, $playerDetails, $playerJerseyNumbers) {
+        $updateOrInsertPlayer = function ($playerId, $teamId, $status, $teamCaptain) use ($game, $playerDetails, $playerJerseyNumbers) {
             DB::table('game_team_players')->updateOrInsert(
                 [
                     'game_id' => $game->id,
@@ -157,6 +169,7 @@ class GameController extends Controller
                     'player_name' => $playerDetails[$playerId] ?? 'Unknown',
                     'jersey_no' => $playerJerseyNumbers[$playerId] ?? '',
                     'status' => $status,
+                    'is_captain' => $playerId == $teamCaptain ? '1' : '0',
                     'subbed_at' => null,
                     'subbed_for' => null,
                     'has_yellow_carded' => '0',
@@ -166,29 +179,30 @@ class GameController extends Controller
             );
         };
 
-        // Insert or update Team A Playing XI (status = 1)
         foreach ($teamAPlayingXI as $playerId) {
-            $updateOrInsertPlayer($playerId, $game->team_a_id, '1');
+            $updateOrInsertPlayer($playerId, $game->team_a_id, '1', $teamACaptain);
         }
 
-        // Insert or update Team B Playing XI (status = 1)
         foreach ($teamBPlayingXI as $playerId) {
-            $updateOrInsertPlayer($playerId, $game->team_b_id, '1');
+            $updateOrInsertPlayer($playerId, $game->team_b_id, '1', $teamBCaptain);
         }
 
-        // Insert or update Team A Substitutes (status = 2)
         foreach ($teamASubs as $playerId) {
-            $updateOrInsertPlayer($playerId, $game->team_a_id, '2');
+            $updateOrInsertPlayer($playerId, $game->team_a_id, '2', $teamACaptain);
         }
 
-        // Insert or update Team B Substitutes (status = 2)
         foreach ($teamBSubs as $playerId) {
-            $updateOrInsertPlayer($playerId, $game->team_b_id, '2');
+            $updateOrInsertPlayer($playerId, $game->team_b_id, '2', $teamBCaptain);
         }
 
         return response()->json([
             'status' => 'success',
             'url' => route('admin.games.index')
         ]);
+    }
+
+    public function gameDashboardView(Request $request, Game $game)
+    {
+        return view('games.gamingDashboard', compact('game'));
     }
 }

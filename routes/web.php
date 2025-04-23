@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\GameController;
+use App\Http\Controllers\GameScoreController;
 use App\Http\Controllers\PlayerController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\TeamController;
@@ -62,6 +63,9 @@ Route::prefix('admin')->group(function () {
 
         Route::get('games/{game}/playing-xi', [GameController::class, 'gamePlayingXI'])->name('games.playingXI');
         Route::post('games/{game}/playing-xi', [GameController::class, 'updateGamePlayingXI'])->name('games.post.playingXI');
+        Route::get('games/{game}/dashboard', [GameController::class, 'gameDashboardView'])->name('games.dashboard');
+
+        Route::post('games/{game}/team/{team}/score', [GameScoreController::class, 'gameScoreAction'])->name('games.team.score');
     });
 
 });

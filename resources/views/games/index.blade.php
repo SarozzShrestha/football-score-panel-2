@@ -38,7 +38,7 @@
             <td>
                 <a href="{{ route('admin.games.show', ['game' => $game]) }}">View</a> |
                 <a href="{{ route('admin.games.playingXI', ['game' => $game]) }}">Playing XI</a> |
-                <a href="{{ route('admin.games.show', ['game' => $game]) }}">Game Dashboard</a> |
+                <a href="{{ route('admin.games.dashboard', ['game' => $game]) }}">Game Dashboard</a> |
 {{--                <a href="{{ route('admin.games.edit', ['game' => $game]) }}">Update</a> |--}}
 {{--                <form action="{{ route('admin.players.destroy', ['player' => $game]) }}" method="POST" style="display: inline-block">--}}
 {{--                    @csrf--}}
