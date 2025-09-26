@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreGameRequest;
 use App\Http\Requests\UpdateGameRequest;
 use App\Models\Game;
+use App\Models\GameCardLog;
 use App\Models\Staff;
 use App\Models\Team;
 use Illuminate\Http\Request;
@@ -158,7 +159,7 @@ class GameController extends Controller
             ->whereIn('player_id', $allPlayers)
             ->pluck('jersey_no', 'player_id');
 
-        $updateOrInsertPlayer = function ($playerId, $teamId, $status, $teamCaptain) use ($game, $playerDetails, $playerJerseyNumbers) {
+        $updateOrInsertPlayer = static function ($playerId, $teamId, $status, $teamCaptain) use ($game, $playerDetails, $playerJerseyNumbers) {
             DB::table('game_team_players')->updateOrInsert(
                 [
                     'game_id' => $game->id,
@@ -169,7 +170,7 @@ class GameController extends Controller
                     'player_name' => $playerDetails[$playerId] ?? 'Unknown',
                     'jersey_no' => $playerJerseyNumbers[$playerId] ?? '',
                     'status' => $status,
-                    'is_captain' => $playerId == $teamCaptain ? '1' : '0',
+                    'is_captain' => $playerId === $teamCaptain ? '1' : '0',
                     'subbed_at' => null,
                     'subbed_for' => null,
                     'has_yellow_carded' => '0',
@@ -204,5 +205,31 @@ class GameController extends Controller
     public function gameDashboardView(Request $request, Game $game)
     {
         return view('games.gamingDashboard', compact('game'));
+    }
+
+    public function gameCardLogAction(Request $request, Game $game, Team $team)
+    {
+        $isYellowCard = $request->get('is_yellow_card') ? '1' : '0';
+        $isRedCard = $request->get('is_red_card') ? '1' : '0';
+
+        $player = $team->players()->where('players.id', $request->get('card_issued_player'))->first();
+        if (!$player)
+        {
+            return redirect()->back()->with('error', 'Error: Invalid Player Detail.');
+        }
+
+        GameCardLog::create([
+            'game_id' => $game->id,
+            'team_id' => $team->id,
+            'player' => $player->id,
+            'player_name' => $player->name,
+            'is_yellow_card' => $isYellowCard,
+            'is_red_card' => $isRedCard,
+            'fouled_at' => $request->get('fouled_at'),
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+
+        return redirect()->back()->with('success', 'Foul Log updated.');
     }
 }

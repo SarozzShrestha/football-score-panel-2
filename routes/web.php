@@ -66,6 +66,7 @@ Route::prefix('admin')->group(function () {
         Route::get('games/{game}/dashboard', [GameController::class, 'gameDashboardView'])->name('games.dashboard');
 
         Route::post('games/{game}/team/{team}/score', [GameScoreController::class, 'gameScoreAction'])->name('games.team.score');
+        Route::post('games/{game}/team/{team}/foul/log', [GameController::class, 'gameCardLogAction'])->name('games.team.cardLog');
     });
 
 });

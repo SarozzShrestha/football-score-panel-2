@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('player_name')->nullable();
             $table->enum('is_yellow_card', ['0', '1'])->default('0');
             $table->enum('is_red_card', ['0', '1'])->default('0');
+            $table->string('fouled_at')->default('00:00:00');
             $table->timestamps();
         });
     }

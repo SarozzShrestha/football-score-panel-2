@@ -158,11 +158,11 @@
     </div>
 </div>
 
-<!-- Modal for Team A Score -->
+<!-- Modal for Team A Foul -->
 <div class="modal fade" id="teamAFoulModal" tabindex="-1" role="dialog" aria-labelledby="teamAFoulModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form method="POST" action="{{ route('admin.games.team.score', ['game' => $game, 'team' => $game->teamA]) }}">
+            <form method="POST" action="{{ route('admin.games.team.cardLog', ['game' => $game, 'team' => $game->teamA]) }}">
                 @csrf
                 <div class="modal-header">
                     <h5 class="modal-title" id="teamAFoulModalLabel">Team A Foul Log</h5>
@@ -174,7 +174,7 @@
                 <div class="modal-body">
                     <!-- Form for Team A Score -->
                     <div class="form-group">
-                        <label for="cardIssuePlayer">Card Issued Player</label>
+                        <label for="cardIssuePlayer">Foul By</label>
                         <select class="form-control" id="cardIssuePlayer" name="card_issued_player">
                             <option value="">-- Select Player --</option>
                             @foreach($game->teamA->players as $player)
@@ -191,8 +191,8 @@
                         <label class="form-check-label" for="is_red_card">Is Red card</label>
                     </div>
                     <div class="form-group">
-                        <label for="scoredTimeA">Card Issued Time</label>
-                        <input type="text" class="form-control" id="cardIssuedTime" name="card_issued_time" placeholder="Enter time (e.g., 45')">
+                        <label for="scoredTimeA">Fouled At</label>
+                        <input type="text" class="form-control" id="cardIssuedTime" name="fouled_at" placeholder="Enter time (e.g., 45')">
                     </div>
                 </div>
                 <div class="modal-footer">

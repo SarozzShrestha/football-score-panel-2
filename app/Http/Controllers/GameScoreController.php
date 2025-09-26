@@ -5,12 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Game;
 use App\Models\GameScore;
 use App\Models\Team;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class GameScoreController extends Controller
 {
 
-    public function gameScoreAction(Request $request, Game $game, Team $team)
+    public function gameScoreAction(Request $request, Game $game, Team $team): RedirectResponse
     {
         $isPenalty = $request->get('is_penalty') ? '1' : '0';
         $isOwnGoal = $request->get('is_own_goal') ? '1' : '0';
