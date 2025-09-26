@@ -4,6 +4,7 @@ use App\Http\Controllers\GameController;
 use App\Http\Controllers\GameScoreController;
 use App\Http\Controllers\PlayerController;
 use App\Http\Controllers\StaffController;
+use App\Http\Controllers\SubstitutionController;
 use App\Http\Controllers\TeamController;
 use Illuminate\Support\Facades\Route;
 
@@ -67,6 +68,11 @@ Route::prefix('admin')->group(function () {
 
         Route::post('games/{game}/team/{team}/score', [GameScoreController::class, 'gameScoreAction'])->name('games.team.score');
         Route::post('games/{game}/team/{team}/foul/log', [GameController::class, 'gameCardLogAction'])->name('games.team.cardLog');
+
+        Route::prefix('games/{game}/teams/{team}/substitutions')->controller(SubstitutionController::class)->group(function () {
+            Route::get('create', 'gameSubstitutionCreate')->name('games.substitution.create');
+            Route::post('/', 'gameSubstitutionStore')->name('games.substitution.store');
+        });
     });
 
 });

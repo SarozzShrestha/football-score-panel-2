@@ -28,6 +28,13 @@
         <!-- Team B Score Button with Modal Trigger -->
         <button class="btn btn-success" data-toggle="modal" data-target="#teamBFoulModal">Team B Foul Log ({{ $game->team_b_abb }})</button>
     </div>
+    <div class="d-flex justify-content-center mt-3">
+            <!-- Team A Score Button with Modal Trigger -->
+            <button class="btn btn-primary mr-3" data-toggle="modal" data-target="#teamSubstitution" onclick="showTeamSubstitutionModal({{ $game->teamA->id }})">Team A Substitutions ({{ $game->team_a_abb }})</button>
+            <!-- Team B Score Button with Modal Trigger -->
+            <button class="btn btn-success" data-toggle="modal" data-target="#teamSubstitution" onclick="showTeamSubstitutionModal({{ $game->teamB->id }})">Team B Substitutions ({{
+                $game->team_b_abb }})</button>
+        </div>
 </div>
 
 <!-- Modal for Team A Score -->
@@ -268,13 +275,35 @@
     </div>
 </div>
 
+{{-- Modal for Team Substitution --}}
+<div class="modal fade" id="teamSubstitution" tabindex="-1" role="dialog" aria-labelledby="teamSubstitutionLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="padding: 5px;">
+            <div id="teamSubstitutionContent"></div>
+        </div>
+    </div>
+</div>
 <!-- Bootstrap JS and dependencies -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 <script>
+function showTeamSubstitutionModal(teamId) {
 
+    $('#teamSubstitution').modal('show');
+    var gameId = @json($game->id);
+
+    $.ajax({
+        url: '/admin/games/' + gameId + '/teams/' + teamId + '/substitutions/create',
+        type: 'GET',
+        success: function(response) {
+            $('#teamSubstitutionContent').html(response);
+            $('#teamSubstitution').modal('show');
+        }
+    });
+}
 </script>
 
 </body>

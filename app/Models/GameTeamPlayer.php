@@ -10,4 +10,6 @@ class GameTeamPlayer extends Model
     use HasFactory;
 
     protected $table = 'game_team_players';
+
+    protected $guarded = [];
 }
