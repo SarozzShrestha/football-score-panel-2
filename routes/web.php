@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\GameController;
+use App\Http\Controllers\GameLogController;
 use App\Http\Controllers\GameScoreController;
 use App\Http\Controllers\PlayerController;
 use App\Http\Controllers\StaffController;
@@ -80,6 +81,18 @@ Route::prefix('admin')->group(function () {
             Route::get('/create', 'createTournament')->name('tournament.create');
             Route::post('/store', 'store')->name('tournament.store');
             Route::post('/update', 'updateTournament')->name('tournament.edit');
+        });
+
+        Route::group(['prefix' => 'games/{game}/', 'controller' => GameLogController::class], function () {
+            Route::get('/score-logs', 'fetchScoreLogs')->name('games.scoreLogs');
+            Route::patch('/score-log/{id}', 'updateScoreLog')->name('games.updateScoreLog');
+            Route::get('/foul-logs', 'fetchFoulLogs')->name('games.foulLogs');
+            Route::get('/substitution-logs', 'fetchSubstitutionLogs')->name('games.substitutionLogs');
+            Route::delete('/score-log/{id}', 'deleteScoreLog')->name('games.deleteScoreLog');
+            Route::patch('/foul-log/{id}', 'updateFoulLog')->name('games.updateFoulLog');
+            Route::delete('/foul-log/{id}','deleteFoulLog')->name('games.deleteFoulLog');
+            Route::delete('/sub-log/{id}', 'deleteSubstitutionLog')->name('games.deleteSubstitutionLog');
+            Route::patch('/sub-log/{id}', 'updateSubstitutionLog')->name('games.updateSubstitutionLog');
         });
     });
 
