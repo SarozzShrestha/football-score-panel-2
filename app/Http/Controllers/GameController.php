@@ -8,6 +8,7 @@ use App\Models\Game;
 use App\Models\GameCardLog;
 use App\Models\Staff;
 use App\Models\Team;
+use App\Models\Tournament;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -29,8 +30,9 @@ class GameController extends Controller
     {
         $teams = Team::get();
         $staffs = Staff::where('role', '1')->get();
+        $tournaments = Tournament::get();
 
-        return view('games.create', compact('teams', 'staffs'));
+        return view('games.create', compact('teams', 'staffs', 'tournaments'));
     }
 
     /**
@@ -49,6 +51,7 @@ class GameController extends Controller
             'first_linesmen' => $request->first_linesmen,
             'second_linesmen' => $request->second_linesmen,
             'official' => $request->official,
+            'tournament_id' => $request->tournament
         ]);
 
         return redirect()->route('admin.games.index')->with('success', 'New Game Created.');

@@ -76,6 +76,14 @@
         @endforeach
     </select><br><br>
 
+    <label for="tournament">Tournament:</label>
+    <select id="tournament" name="tournament">
+        <option value="">-- Select Tournament --</option>
+        @foreach($tournaments as $tournament)
+            <option value="{{ $tournament->id }}">{{ $tournament->name }} ({{ $tournament->year }})</option>
+        @endforeach
+    </select><br><br>
+
     <!-- Submit Button -->
     <button type="submit">Submit</button>
     <button type="reset">Reset</button>
